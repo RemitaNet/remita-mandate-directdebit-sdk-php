@@ -11,13 +11,13 @@ class Credentials
 
     public $serviceTypeId;
 
-    public $requestId;
-
     public $amount;
 
     public $hash;
 
     public $headers;
+
+    public $apiToken;
 }
 
 ?>

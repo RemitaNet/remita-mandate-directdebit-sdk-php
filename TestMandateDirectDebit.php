@@ -1,6 +1,8 @@
 <?php
 include 'MandateDirectDebitService.php';
-include 'Request/SetupMandate/SetupMandateRequest.php';
+include 'Request/SetupMandateRequest.php';
+include 'Request/MandateStatusRequest.php';
+include 'Request/MandateActivateRequestOTP.php';
 
 function initTest()
 {
@@ -8,8 +10,8 @@ function initTest()
     $merchantId = "27768931";
     $serviceTypeId = "35126630";
     $apiKey = "Q1dHREVNTzEyMzR8Q1dHREVNTw==";
+    $apiToken = "SGlQekNzMEdMbjhlRUZsUzJCWk5saDB6SU14Zk15djR4WmkxaUpDTll6bGIxRCs4UkVvaGhnPT0=";
     $amount = "100";
-    $requestId = round(microtime(true) * 1000);
 
     // Initialize SDK
     $credentials = new Credentials();
@@ -18,7 +20,7 @@ function initTest()
     $credentials->serviceTypeId = $serviceTypeId;
     $credentials->apiKey = $apiKey;
     $credentials->amount = $amount;
-    $credentials->requestId = $requestId;
+    $credentials->apiToken = $apiToken;
 
     return $credentials;
 }
@@ -28,6 +30,7 @@ class TestMandateDirectDebit
 
     function test()
     {
+        echo "// Initialize Credentials++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $credentials = initTest();
         MandateDirectDebitService::initCredentials($credentials);
@@ -40,16 +43,41 @@ class TestMandateDirectDebit
         $setupMandateRequest->payerPhone = "09062067384";
         $setupMandateRequest->payerBankCode = "057";
         $setupMandateRequest->payerAccount = "0035509366";
-        $setupMandateRequest->requestId = "Regular Payment";
+        $setupMandateRequest->requestId = round(microtime(true) * 1000);
         $setupMandateRequest->startDate = "19/07/2021";
         $setupMandateRequest->endDate = "22/08/2021";
         $setupMandateRequest->mandateType = "DD";
         $setupMandateRequest->maxNoOfDebits = "6";
-
         $response = MandateDirectDebitService::setupMandate($setupMandateRequest);
         echo "\n";
         echo "\n";
         echo "Setup Mandate Response:\n", json_encode($response);
+        echo "\n";
+        echo "\n";
+
+        echo "// Mandate Status++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "\n";
+        $mandateStatusRequest = new MandateStatusRequest();
+        $mandateStatusRequest->mandateId = "290007822729";
+        $mandateStatusRequest->requestId = "STR-1587564374156-iFIV3uFAXv";
+        $response = MandateDirectDebitService::mandateStatus($mandateStatusRequest);
+        echo "\n";
+        echo "\n";
+        echo "Mandate Status Response:\n", json_encode($response);
+        echo "\n";
+        echo "\n";
+
+        echo "// MandateActivateRequestOTP++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "\n";
+        $mandateActivateRequestOTP = new MandateActivateRequestOTP();
+        $mandateActivateRequestOTP->mandateId = "350007841368";
+        $mandateActivateRequestOTP->requestId = "1593695291235";
+        $response = MandateDirectDebitService::activateMandate($mandateActivateRequestOTP);
+        echo "\n";
+        echo "\n";
+        echo "Mandate Status Response:\n", json_encode($response);
+        echo "\n";
+        echo "\n";
     }
 }
 
