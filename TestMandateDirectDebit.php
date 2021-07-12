@@ -3,6 +3,8 @@ include 'MandateDirectDebitService.php';
 include 'Request/SetupMandateRequest.php';
 include 'Request/MandateStatusRequest.php';
 include 'Request/MandateActivateRequestOTP.php';
+include 'Request/MandateActivateValidateOTP.php';
+include 'Request/AuthParams.php';
 
 function initTest()
 {
@@ -72,10 +74,34 @@ class TestMandateDirectDebit
         $mandateActivateRequestOTP = new MandateActivateRequestOTP();
         $mandateActivateRequestOTP->mandateId = "350007841368";
         $mandateActivateRequestOTP->requestId = "1593695291235";
-        $response = MandateDirectDebitService::activateMandate($mandateActivateRequestOTP);
+        $response = MandateDirectDebitService::activateMandateRequestOTP($mandateActivateRequestOTP);
         echo "\n";
         echo "\n";
-        echo "Mandate Status Response:\n", json_encode($response);
+        echo "Mandate Activate Request OTP Response:\n", json_encode($response);
+        echo "\n";
+        echo "\n";
+
+        echo "// MandateActivateValidateOTP++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "\n";
+        $mandateActivateValidateOTP = new MandateActivateValidateOTP();
+        $mandateActivateValidateOTP->remitaTransRef = "1587568766736";
+
+        $authParam1 = new AuthParams();
+        $authParam1->param1 = "OTP";
+        $authParam1->value1 = "1234";
+
+        $authParam2 = new AuthParams();
+        $authParam2->param2 = "CARD";
+        $authParam2->value2 = "0441234567890";
+
+        $mandateActivateValidateOTP->authParams = array(
+            $authParam1,
+            $authParam2
+        );
+        $response = MandateDirectDebitService::activateMandateValidatetOTP($mandateActivateValidateOTP);
+        echo "\n";
+        echo "\n";
+        echo "Mandate Activate Validate OTP:\n", json_encode($response);
         echo "\n";
         echo "\n";
     }

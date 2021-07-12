@@ -1,6 +1,6 @@
 <?php
 
-class MandateActivateRequestOTP
+class MandateActivateValidateOTP
 {
 
     public $remitaTransRef;
