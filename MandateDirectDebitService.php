@@ -68,6 +68,86 @@ class MandateDirectDebitService
         return MandateDirectDebitService::formatResponse($result);
     }
 
+    // ACTIVATE MANDATE OTP REQUEST
+    public static function activateMandateRequestOTP($mandateActivateRequestOTP)
+    {
+        $url = MandateDirectDebitService::$credentials->url . ApplicationUrl::$mandateActivateRequestOTPPath;
+        $mandateId = utf8_encode($mandateActivateRequestOTP->mandateId);
+        $requestId = $mandateActivateRequestOTP->requestId;
+
+        $merchantId = MandateDirectDebitService::$credentials->merchantId;
+        $apiKey = MandateDirectDebitService::$credentials->apiKey;
+        $apiToken = MandateDirectDebitService::$credentials->apiToken;
+        $time = date("H:i:s+000000");
+        $date = date("Y-m-d");
+        $timeStamp = $date . "T" . $time; // 2019-09-11T05:33:39+000000
+        $headerRequestId = round(microtime(true) * 1000);
+
+        $hash = hash('sha512', $apiKey . $headerRequestId . $apiToken);
+
+        $headers = array(
+            'Content-Type: application/json',
+            'MERCHANT_ID:' . $merchantId,
+            'API_KEY:' . $apiKey,
+            'REQUEST_ID:' . $headerRequestId,
+            'REQUEST_TS:' . $timeStamp,
+            'API_DETAILS_HASH:' . $hash
+        );
+
+        // POST BODY
+        $phpArray = array(
+            'mandateId' => $mandateId,
+            'requestId' => $requestId
+        );
+
+        // POST CALL
+        $result = HTTPUtil::postMethod($url, $headers, json_encode($phpArray));
+        return MandateDirectDebitService::formatResponse($result);
+    }
+
+    // ACTIVATE MANDATE OTP VALIDATE
+    public static function activateMandateValidatetOTP($mandateActivateValidateOTP)
+    {
+        $url = MandateDirectDebitService::$credentials->url . ApplicationUrl::$mandateActivateValidateOTPPath;
+        $remitaTransRef = utf8_encode($mandateActivateValidateOTP->remitaTransRef);
+        $authParams = utf8_encode($mandateActivateValidateOTP->authParams);
+
+        $merchantId = utf8_encode(MandateDirectDebitService::$credentials->merchantId);
+        $apiKey = utf8_encode(MandateDirectDebitService::$credentials->apiKey);
+        $apiToken = utf8_encode(MandateDirectDebitService::$credentials->apiToken);
+        $requestId = utf8_encode(MandateDirectDebitService::$credentials->requestId);
+        $time = date("H:i:s+000000");
+        $date = date("Y-m-d");
+        $timeStamp = $date . "T" . $time; // 2019-09-11T05:33:39+000000
+
+        $hash = hash('sha512', $apiKey . $requestId . $apiToken);
+
+        $headers = array(
+            'Content-Type: application/json',
+            'MERCHANT_ID:' . $merchantId,
+            'API_KEY:' . $apiKey,
+            'REQUEST_ID:' . $requestId,
+            'REQUEST_TS:' . $timeStamp,
+            'API_DETAILS_HASH:' . $hash
+        );
+
+        // POST BODY
+        $phpArray = array(
+            'remitaTransRef' => $remitaTransRef,
+            'authParams' => $authParams
+        );
+
+        // echo "\n";
+        // echo "headers: ", json_encode($headers);
+
+        // echo "\n";
+        // echo "phpArray: ", json_encode($phpArray);
+
+        // POST CALL
+        $result = HTTPUtil::postMethod($url, $headers, json_encode($phpArray));
+        return MandateDirectDebitService::formatResponse($result);
+    }
+
     // MANDATE STATUS
     public static function mandateStatus($mandateStatusRequest)
     {
@@ -91,85 +171,6 @@ class MandateDirectDebitService
             'requestId' => $requestId
         );
 
-        // POST CALL
-        $result = HTTPUtil::postMethod($url, $headers, json_encode($phpArray));
-        return MandateDirectDebitService::formatResponse($result);
-    }
-
-    // ACTIVATE MANDATE OTP REQUEST
-    public static function activateMandateRequestOTP($mandateActivateRequestOTP)
-    {
-        $url = MandateDirectDebitService::$credentials->url . ApplicationUrl::$mandateActivateRequestOTPPath;
-        $mandateId = utf8_encode($mandateActivateRequestOTP->mandateId);
-
-        $merchantId = MandateDirectDebitService::$credentials->merchantId;
-        $apiKey = MandateDirectDebitService::$credentials->apiKey;
-        $apiToken = MandateDirectDebitService::$credentials->apiToken;
-        $requestId = MandateDirectDebitService::$credentials->requestId;
-        $time = date("H:i:s+000000");
-        $date = date("Y-m-d");
-        $timeStamp = $date . "T" . $time; // 2019-09-11T05:33:39+000000
-
-        $hash = hash('sha512', $apiKey . $requestId . $apiToken);
-
-        $headers = array(
-            'Content-Type: application/json',
-            'MERCHANT_ID:' . $merchantId,
-            'API_KEY:' . $apiKey,
-            'REQUEST_ID:' . $requestId,
-            'REQUEST_TS:' . $timeStamp,
-            'API_DETAILS_HASH:' . $hash
-        );
-
-        // POST BODY
-        $phpArray = array(
-            'mandateId' => $mandateId,
-            'requestId' => $requestId
-        );
-
-        // POST CALL
-        $result = HTTPUtil::postMethod($url, $headers, json_encode($phpArray));
-        return MandateDirectDebitService::formatResponse($result);
-    }
-
-    // ACTIVATE MANDATE OTP VALIDATE
-    public static function activateMandateValidatetOTP($mandateActivateValidateOTP)
-    {
-        $url = MandateDirectDebitService::$credentials->url . ApplicationUrl::$mandateActivateValidateOTPPath;
-        $remitaTransRef = utf8_encode($mandateActivateValidateOTP->remitaTransRef);
-        $authParams = utf8_encode($mandateActivateValidateOTP->authParams);
-
-        $merchantId = MandateDirectDebitService::$credentials->merchantId;
-        $apiKey = MandateDirectDebitService::$credentials->apiKey;
-        $apiToken = MandateDirectDebitService::$credentials->apiToken;
-        $requestId = MandateDirectDebitService::$credentials->requestId;
-        $time = date("H:i:s+000000");
-        $date = date("Y-m-d");
-        $timeStamp = $date . "T" . $time; // 2019-09-11T05:33:39+000000
-
-        $hash = hash('sha512', $apiKey . $requestId . $apiToken);
-
-        $headers = array(
-            'Content-Type: application/json',
-            'MERCHANT_ID:' . $merchantId,
-            'API_KEY:' . $apiKey,
-            'REQUEST_ID:' . $requestId,
-            'REQUEST_TS:' . $timeStamp,
-            'API_DETAILS_HASH:' . $hash
-        );
-
-        // POST BODY
-        $phpArray = array(
-            'remitaTransRef' => $remitaTransRef,
-            'authParams' => $authParams
-        );
-
-        echo "\n";
-        echo "headers: ", json_encode($headers);
-        
-        echo "\n";
-        echo "phpArray: ", json_encode($phpArray);
-        
         // POST CALL
         $result = HTTPUtil::postMethod($url, $headers, json_encode($phpArray));
         return MandateDirectDebitService::formatResponse($result);

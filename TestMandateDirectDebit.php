@@ -32,7 +32,7 @@ class TestMandateDirectDebit
 
     function test()
     {
-        echo "// Initialize Credentials++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        // Initialize Credentials++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $credentials = initTest();
         MandateDirectDebitService::initCredentials($credentials);
@@ -57,23 +57,12 @@ class TestMandateDirectDebit
         echo "\n";
         echo "\n";
 
-        echo "// Mandate Status++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
-        echo "\n";
-        $mandateStatusRequest = new MandateStatusRequest();
-        $mandateStatusRequest->mandateId = "290007822729";
-        $mandateStatusRequest->requestId = "STR-1587564374156-iFIV3uFAXv";
-        $response = MandateDirectDebitService::mandateStatus($mandateStatusRequest);
-        echo "\n";
-        echo "\n";
-        echo "Mandate Status Response:\n", json_encode($response);
-        echo "\n";
-        echo "\n";
-
         echo "// MandateActivateRequestOTP++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $mandateActivateRequestOTP = new MandateActivateRequestOTP();
-        $mandateActivateRequestOTP->mandateId = "350007841368";
-        $mandateActivateRequestOTP->requestId = "1593695291235";
+        $mandateActivateRequestOTP->mandateId = $response->mandateId;
+        $mandateActivateRequestOTP->requestId = $response->requestId;
+        ;
         $response = MandateDirectDebitService::activateMandateRequestOTP($mandateActivateRequestOTP);
         echo "\n";
         echo "\n";
@@ -102,6 +91,18 @@ class TestMandateDirectDebit
         echo "\n";
         echo "\n";
         echo "Mandate Activate Validate OTP:\n", json_encode($response);
+        echo "\n";
+        echo "\n";
+
+        echo "// Mandate Status++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "\n";
+        $mandateStatusRequest = new MandateStatusRequest();
+        $mandateStatusRequest->mandateId = "290007822729";
+        $mandateStatusRequest->requestId = "STR-1587564374156-iFIV3uFAXv";
+        $response = MandateDirectDebitService::mandateStatus($mandateStatusRequest);
+        echo "\n";
+        echo "\n";
+        echo "Mandate Status Response:\n", json_encode($response);
         echo "\n";
         echo "\n";
     }

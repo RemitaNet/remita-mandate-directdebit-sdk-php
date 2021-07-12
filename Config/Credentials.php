@@ -18,6 +18,8 @@ class Credentials
     public $headers;
 
     public $apiToken;
+
+    public $requestId;
 }
 
 ?>
