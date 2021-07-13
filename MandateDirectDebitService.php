@@ -19,7 +19,7 @@ class MandateDirectDebitService
         MandateDirectDebitService::$credentials = $initCredentials;
     }
 
-    // GET HEADERS
+    // FORMAT RESPONSE
     public static function formatResponse($response)
     {
         $result = $response;
@@ -297,22 +297,22 @@ class MandateDirectDebitService
         $result = HTTPUtil::postMethod($url, $headers, json_encode($phpArray));
         return MandateDirectDebitService::formatResponse($result);
     }
-    
+
     // STOP MANDATE
     public static function stopMandate($stopMandateRequest)
     {
         $url = MandateDirectDebitService::$credentials->url . ApplicationUrl::$stopMandatePath;
-        
+
         $merchantId = utf8_encode(MandateDirectDebitService::$credentials->merchantId);
         $apiKey = utf8_encode(MandateDirectDebitService::$credentials->apiKey);
         $mandateId = utf8_encode($stopMandateRequest->mandateId);
         $requestId = utf8_encode($stopMandateRequest->requestId);
         $hash = hash('sha512', $mandateId . $merchantId . $requestId . $apiKey);
-        
+
         $headers = $headers = array(
             'Content-Type: application/json'
         );
-        
+
         // POST BODY
         $phpArray = array(
             'merchantId' => $merchantId,
@@ -320,7 +320,7 @@ class MandateDirectDebitService
             'hash' => $hash,
             'requestId' => $requestId
         );
-        
+
         // POST CALL
         $result = HTTPUtil::postMethod($url, $headers, json_encode($phpArray));
         return MandateDirectDebitService::formatResponse($result);
