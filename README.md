@@ -1,7 +1,7 @@
 # remita-mandate-directdebit-sdk-php
 
 ```php
-  // Initialize Credentials++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        // Initialize Credentials++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $credentials = initTest();
         MandateDirectDebitService::initCredentials($credentials);
@@ -26,7 +26,7 @@
         echo "\n";
         echo "\n";
 
-        echo "// MandateActivateRequestOTP++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "// MandateActivateRequestOTP++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $mandateActivateRequestOTP = new MandateActivateRequestOTP();
         $mandateActivateRequestOTP->mandateId = $response->mandateId;
@@ -39,7 +39,7 @@
         echo "\n";
         echo "\n";
 
-        echo "// MandateActivateValidateOTP++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "// MandateActivateValidateOTP++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $mandateActivateValidateOTP = new MandateActivateValidateOTP();
         $mandateActivateValidateOTP->remitaTransRef = "1587568766736";
@@ -63,7 +63,7 @@
         echo "\n";
         echo "\n";
 
-        echo "// Send Debit Instruction ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "// Send Debit Instruction ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $sendDebitInstructionRequest = new SendDebitInstructionRequest();
         $sendDebitInstructionRequest->mandateId = "280007806861";
@@ -77,7 +77,7 @@
         echo "\n";
         echo "\n";
 
-        echo "// Debit Status ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "// Debit Status ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $debitStatusRequest = new DebitStatusRequest();
         $debitStatusRequest->mandateId = "140007735469";
@@ -89,7 +89,7 @@
         echo "\n";
         echo "\n";
 
-        echo "// Cancel Debit Instruction++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "// Cancel Debit Instruction+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $cancelDebitInstructionRequest = new CancelDebitInstructionRequest();
         $cancelDebitInstructionRequest->transactionRef = "7681307";
@@ -102,7 +102,7 @@
         echo "\n";
         echo "\n";
 
-        echo "// Mandate Payment History Request++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "// Mandate Payment History Request+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $mandatePaymentHistoryRequest = new MandatePaymentHistoryRequest();
         $mandatePaymentHistoryRequest->mandateId = "280007807262";
@@ -114,7 +114,7 @@
         echo "\n";
         echo "\n";
 
-        echo "// Stop Mandate++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "// Stop Mandate++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $stopMandateRequest = new StopMandateRequest();
         $stopMandateRequest->mandateId = "150007761106";
@@ -126,7 +126,7 @@
         echo "\n";
         echo "\n";
 
-        echo "// Mandate Status++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "// Mandate Status++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $mandateStatusRequest = new MandateStatusRequest();
         $mandateStatusRequest->mandateId = "290007822729";
