@@ -73,14 +73,14 @@ class MandateDirectDebitService
     {
         $url = MandateDirectDebitService::$credentials->url . ApplicationUrl::$mandateActivateRequestOTPPath;
         $mandateId = utf8_encode($mandateActivateRequestOTP->mandateId);
-        $requestId = $mandateActivateRequestOTP->requestId;
+        $requestId = utf8_encode($mandateActivateRequestOTP->requestId);
 
-        $merchantId = MandateDirectDebitService::$credentials->merchantId;
-        $apiKey = MandateDirectDebitService::$credentials->apiKey;
-        $apiToken = MandateDirectDebitService::$credentials->apiToken;
+        $merchantId = utf8_encode(MandateDirectDebitService::$credentials->merchantId);
+        $apiKey = utf8_encode(MandateDirectDebitService::$credentials->apiKey);
+        $apiToken = utf8_encode(MandateDirectDebitService::$credentials->apiToken);
         $time = date("H:i:s+000000");
         $date = date("Y-m-d");
-        $timeStamp = $date . "T" . $time; // 2019-09-11T05:33:39+000000
+        $timeStamp = utf8_encode($date . "T" . $time); // 2019-09-11T05:33:39+000000
         $headerRequestId = round(microtime(true) * 1000);
 
         $hash = hash('sha512', $apiKey . $headerRequestId . $apiToken);
@@ -118,7 +118,7 @@ class MandateDirectDebitService
         $requestId = utf8_encode(MandateDirectDebitService::$credentials->requestId);
         $time = date("H:i:s+000000");
         $date = date("Y-m-d");
-        $timeStamp = $date . "T" . $time; // 2019-09-11T05:33:39+000000
+        $timeStamp = utf8_encode($date . "T" . $time); // 2019-09-11T05:33:39+000000
 
         $hash = hash('sha512', $apiKey . $requestId . $apiToken);
 
@@ -142,6 +142,100 @@ class MandateDirectDebitService
 
         // echo "\n";
         // echo "phpArray: ", json_encode($phpArray);
+
+        // POST CALL
+        $result = HTTPUtil::postMethod($url, $headers, json_encode($phpArray));
+        return MandateDirectDebitService::formatResponse($result);
+    }
+
+    // DEBIT INSTRUCTION
+    public static function sendDebitInstruction($sendDebitInstructionRequest)
+    {
+        $url = MandateDirectDebitService::$credentials->url . ApplicationUrl::$sendDebitInstructionPath;
+
+        $merchantId = utf8_encode(MandateDirectDebitService::$credentials->merchantId);
+        $serviceTypeId = utf8_encode(MandateDirectDebitService::$credentials->serviceTypeId);
+        $apiKey = utf8_encode(MandateDirectDebitService::$credentials->apiKey);
+        $amount = utf8_encode(MandateDirectDebitService::$credentials->amount);
+        $mandateId = utf8_encode($sendDebitInstructionRequest->mandateId);
+        $fundingAccount = utf8_encode($sendDebitInstructionRequest->fundingAccount);
+        $fundingBankCode = utf8_encode($sendDebitInstructionRequest->fundingBankCode);
+        $requestId = utf8_encode($sendDebitInstructionRequest->requestId);
+        $hash = hash('sha512', $merchantId . $serviceTypeId . $requestId . $amount . $apiKey);
+
+        $headers = $headers = array(
+            'Content-Type: application/json'
+        );
+
+        // POST BODY
+        $phpArray = array(
+            'merchantId' => $merchantId,
+            'serviceTypeId' => $serviceTypeId,
+            'hash' => $hash,
+            'requestId' => $requestId,
+            'totalAmount' => $amount,
+            'mandateId' => $mandateId,
+            'fundingAccount' => $fundingAccount,
+            'fundingBankCode' => $fundingBankCode
+        );
+
+        // POST CALL
+        $result = HTTPUtil::postMethod($url, $headers, json_encode($phpArray));
+        return MandateDirectDebitService::formatResponse($result);
+    }
+
+    // DEBIT STATUS
+    public static function debitStatus($debitStatusRequest)
+    {
+        $url = MandateDirectDebitService::$credentials->url . ApplicationUrl::$debitStatusPath;
+
+        $merchantId = utf8_encode(MandateDirectDebitService::$credentials->merchantId);
+        $apiKey = utf8_encode(MandateDirectDebitService::$credentials->apiKey);
+        $mandateId = utf8_encode($debitStatusRequest->mandateId);
+        $requestId = utf8_encode($debitStatusRequest->requestId);
+        $hash = hash('sha512', $mandateId . $merchantId . $requestId . $apiKey);
+
+        $headers = $headers = array(
+            'Content-Type: application/json'
+        );
+
+        // POST BODY
+        $phpArray = array(
+            'merchantId' => $merchantId,
+            'mandateId' => $mandateId,
+            'hash' => $hash,
+            'requestId' => $requestId
+        );
+
+        // POST CALL
+        $result = HTTPUtil::postMethod($url, $headers, json_encode($phpArray));
+        return MandateDirectDebitService::formatResponse($result);
+    }
+
+    // CANCEL DEBIT INSTRUCTION
+    public static function cancelDebitInstruction($cancelDebitInstructionRequest)
+    {
+        $url = MandateDirectDebitService::$credentials->url . ApplicationUrl::$cancelDebitInstructionPath;
+
+        $merchantId = utf8_encode(MandateDirectDebitService::$credentials->merchantId);
+        $apiKey = utf8_encode(MandateDirectDebitService::$credentials->apiKey);
+        $mandateId = utf8_encode($cancelDebitInstructionRequest->mandateId);
+        $requestId = utf8_encode($cancelDebitInstructionRequest->requestId);
+        $transactionRef = utf8_encode($cancelDebitInstructionRequest->transactionRef);
+        $hash = hash('sha512', $transactionRef . $merchantId . $requestId . $apiKey);
+
+        $headers = $headers = array(
+            'Content-Type: application/json'
+        );
+
+        // POST BODY
+        $phpArray = array(
+            'merchantId' => $merchantId,
+            'mandateId' => $mandateId,
+            'hash' => $hash,
+            'transactionRef' => $transactionRef,
+            'requestId' => $requestId
+        );
 
         // POST CALL
         $result = HTTPUtil::postMethod($url, $headers, json_encode($phpArray));

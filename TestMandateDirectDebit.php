@@ -5,6 +5,9 @@ include 'Request/MandateStatusRequest.php';
 include 'Request/MandateActivateRequestOTP.php';
 include 'Request/MandateActivateValidateOTP.php';
 include 'Request/AuthParams.php';
+include 'Request/SendDebitInstructionRequest.php';
+include 'Request/DebitStatusRequest.php';
+include 'Request/CancelDebitInstructionRequest.php';
 
 function initTest()
 {
@@ -13,7 +16,7 @@ function initTest()
     $serviceTypeId = "35126630";
     $apiKey = "Q1dHREVNTzEyMzR8Q1dHREVNTw==";
     $apiToken = "SGlQekNzMEdMbjhlRUZsUzJCWk5saDB6SU14Zk15djR4WmkxaUpDTll6bGIxRCs4UkVvaGhnPT0=";
-    $amount = "100";
+    $amount = "1000";
 
     // Initialize SDK
     $credentials = new Credentials();
@@ -53,7 +56,7 @@ class TestMandateDirectDebit
         $response = MandateDirectDebitService::setupMandate($setupMandateRequest);
         echo "\n";
         echo "\n";
-        echo "Setup Mandate Response:\n", json_encode($response);
+        echo "Response:\n", json_encode($response);
         echo "\n";
         echo "\n";
 
@@ -66,7 +69,7 @@ class TestMandateDirectDebit
         $response = MandateDirectDebitService::activateMandateRequestOTP($mandateActivateRequestOTP);
         echo "\n";
         echo "\n";
-        echo "Mandate Activate Request OTP Response:\n", json_encode($response);
+        echo "Response:\n", json_encode($response);
         echo "\n";
         echo "\n";
 
@@ -90,7 +93,46 @@ class TestMandateDirectDebit
         $response = MandateDirectDebitService::activateMandateValidatetOTP($mandateActivateValidateOTP);
         echo "\n";
         echo "\n";
-        echo "Mandate Activate Validate OTP:\n", json_encode($response);
+        echo "Response:\n", json_encode($response);
+        echo "\n";
+        echo "\n";
+
+        echo "// Send Debit Instruction ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "\n";
+        $sendDebitInstructionRequest = new SendDebitInstructionRequest();
+        $sendDebitInstructionRequest->mandateId = "280007806861";
+        $sendDebitInstructionRequest->fundingAccount = "3072119052";
+        $sendDebitInstructionRequest->fundingBankCode = "057";
+        $sendDebitInstructionRequest->requestId = round(microtime(true) * 1000);
+        $response = MandateDirectDebitService::sendDebitInstruction($sendDebitInstructionRequest);
+        echo "\n";
+        echo "\n";
+        echo "Response:\n", json_encode($response);
+        echo "\n";
+        echo "\n";
+
+        echo "// Debit Status ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "\n";
+        $debitStatusRequest = new DebitStatusRequest();
+        $debitStatusRequest->mandateId = "140007735469";
+        $debitStatusRequest->requestId = "1551782788673";
+        $response = MandateDirectDebitService::debitStatus($debitStatusRequest);
+        echo "\n";
+        echo "\n";
+        echo "Response:\n", json_encode($response);
+        echo "\n";
+        echo "\n";
+
+        echo "// Cancel Debit Instruction++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "\n";
+        $cancelDebitInstructionRequest = new CancelDebitInstructionRequest();
+        $cancelDebitInstructionRequest->transactionRef = "7681307";
+        $cancelDebitInstructionRequest->mandateId = "200007681305";
+        $cancelDebitInstructionRequest->requestId = "1524034885236";
+        $response = MandateDirectDebitService::cancelDebitInstruction($cancelDebitInstructionRequest);
+        echo "\n";
+        echo "\n";
+        echo "Response:\n", json_encode($response);
         echo "\n";
         echo "\n";
 
@@ -102,7 +144,7 @@ class TestMandateDirectDebit
         $response = MandateDirectDebitService::mandateStatus($mandateStatusRequest);
         echo "\n";
         echo "\n";
-        echo "Mandate Status Response:\n", json_encode($response);
+        echo "Response:\n", json_encode($response);
         echo "\n";
         echo "\n";
     }
