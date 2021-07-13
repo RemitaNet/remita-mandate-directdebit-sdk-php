@@ -2,7 +2,7 @@
 
 See preview code below 
 OR 
-Clone project and peruse https://github.com/RemitaNet/remita-mandate-directdebit-sdk-php/blob/main/TestMandateDirectDebit.php
+Clone project and peruse/run https://github.com/RemitaNet/remita-mandate-directdebit-sdk-php/blob/main/TestMandateDirectDebit.php
 
 ```php
         // Initialize Credentials++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
