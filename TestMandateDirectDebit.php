@@ -8,6 +8,8 @@ include 'Request/AuthParams.php';
 include 'Request/SendDebitInstructionRequest.php';
 include 'Request/DebitStatusRequest.php';
 include 'Request/CancelDebitInstructionRequest.php';
+include 'Request/MandatePaymentHistoryRequest.php';
+include 'Request/StopMandateRequest.php';
 
 function initTest()
 {
@@ -130,6 +132,30 @@ class TestMandateDirectDebit
         $cancelDebitInstructionRequest->mandateId = "200007681305";
         $cancelDebitInstructionRequest->requestId = "1524034885236";
         $response = MandateDirectDebitService::cancelDebitInstruction($cancelDebitInstructionRequest);
+        echo "\n";
+        echo "\n";
+        echo "Response:\n", json_encode($response);
+        echo "\n";
+        echo "\n";
+
+        echo "// Mandate Payment History Request++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "\n";
+        $mandatePaymentHistoryRequest = new MandatePaymentHistoryRequest();
+        $mandatePaymentHistoryRequest->mandateId = "280007807262";
+        $mandatePaymentHistoryRequest->requestId = "1582194580";
+        $response = MandateDirectDebitService::mandatePaymentHistory($mandatePaymentHistoryRequest);
+        echo "\n";
+        echo "\n";
+        echo "Response:\n", json_encode($response);
+        echo "\n";
+        echo "\n";
+
+        echo "// Stop Mandate++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+        echo "\n";
+        $stopMandateRequest = new StopMandateRequest();
+        $stopMandateRequest->mandateId = "150007761106";
+        $stopMandateRequest->requestId = "1564489623447";
+        $response = MandateDirectDebitService::stopMandate($stopMandateRequest);
         echo "\n";
         echo "\n";
         echo "Response:\n", json_encode($response);

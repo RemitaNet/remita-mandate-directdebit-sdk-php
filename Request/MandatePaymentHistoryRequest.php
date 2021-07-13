@@ -1,6 +1,6 @@
 <?php
 
-class MandateStatusRequest
+class MandatePaymentHistoryRequest
 {
 
     public $mandateId;
