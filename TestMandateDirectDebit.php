@@ -4,7 +4,6 @@ include 'Request/SetupMandateRequest.php';
 include 'Request/MandateStatusRequest.php';
 include 'Request/MandateActivateRequestOTP.php';
 include 'Request/MandateActivateValidateOTP.php';
-include 'Request/AuthParams.php';
 include 'Request/SendDebitInstructionRequest.php';
 include 'Request/DebitStatusRequest.php';
 include 'Request/CancelDebitInstructionRequest.php';
@@ -51,8 +50,8 @@ class TestMandateDirectDebit
         $setupMandateRequest->payerBankCode = "057";
         $setupMandateRequest->payerAccount = "0035509366";
         $setupMandateRequest->requestId = round(microtime(true) * 1000);
-        $setupMandateRequest->startDate = "19/07/2021";
-        $setupMandateRequest->endDate = "22/08/2021";
+        $setupMandateRequest->startDate = date("d/m/Y"); // "29/07/2021";
+        $setupMandateRequest->endDate = "22/08/2022";
         $setupMandateRequest->mandateType = "DD";
         $setupMandateRequest->maxNoOfDebits = "6";
         $response = MandateDirectDebitService::setupMandate($setupMandateRequest);
@@ -67,7 +66,7 @@ class TestMandateDirectDebit
         $mandateActivateRequestOTP = new MandateActivateRequestOTP();
         $mandateActivateRequestOTP->mandateId = $response->mandateId;
         $mandateActivateRequestOTP->requestId = $response->requestId;
-        ;
+
         $response = MandateDirectDebitService::activateMandateRequestOTP($mandateActivateRequestOTP);
         echo "\n";
         echo "\n";
@@ -78,20 +77,9 @@ class TestMandateDirectDebit
         echo "// MandateActivateValidateOTP++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $mandateActivateValidateOTP = new MandateActivateValidateOTP();
-        $mandateActivateValidateOTP->remitaTransRef = "1587568766736";
-
-        $authParam1 = new AuthParams();
-        $authParam1->param1 = "OTP";
-        $authParam1->value1 = "1234";
-
-        $authParam2 = new AuthParams();
-        $authParam2->param2 = "CARD";
-        $authParam2->value2 = "0441234567890";
-
-        $mandateActivateValidateOTP->authParams = array(
-            $authParam1,
-            $authParam2
-        );
+        $mandateActivateValidateOTP->remitaTransRef = $response->remitaTransRef;
+        $mandateActivateValidateOTP->card = "0441234567890";
+        $mandateActivateValidateOTP->otp = "1234";
         $response = MandateDirectDebitService::activateMandateValidatetOTP($mandateActivateValidateOTP);
         echo "\n";
         echo "\n";
@@ -102,7 +90,7 @@ class TestMandateDirectDebit
         echo "// Send Debit Instruction ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
         echo "\n";
         $sendDebitInstructionRequest = new SendDebitInstructionRequest();
-        $sendDebitInstructionRequest->mandateId = "280007806861";
+        $sendDebitInstructionRequest->mandateId = $response->mandateId;
         $sendDebitInstructionRequest->fundingAccount = "3072119052";
         $sendDebitInstructionRequest->fundingBankCode = "057";
         $sendDebitInstructionRequest->requestId = round(microtime(true) * 1000);

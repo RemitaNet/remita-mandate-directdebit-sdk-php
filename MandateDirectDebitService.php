@@ -2,6 +2,8 @@
 include 'Config/Credentials.php';
 include 'Constants/ApplicationUrl.php';
 include 'Util/HTTPUtil.php';
+include 'Request/AuthParams1.php';
+include 'Request/AuthParams2.php';
 
 class MandateDirectDebitService
 {
@@ -63,6 +65,11 @@ class MandateDirectDebitService
             'maxNoOfDebits' => $setupMandateRequest->maxNoOfDebits
         );
 
+        // echo "\n";
+        // echo "headers: ", json_encode($headers);
+        // echo "\n";
+        // echo "phpArray: ", json_encode($phpArray);
+
         // POST CALL
         $result = HTTPUtil::postMethod($url, $headers, json_encode($phpArray));
         return MandateDirectDebitService::formatResponse($result);
@@ -110,12 +117,13 @@ class MandateDirectDebitService
     {
         $url = MandateDirectDebitService::$credentials->url . ApplicationUrl::$mandateActivateValidateOTPPath;
         $remitaTransRef = utf8_encode($mandateActivateValidateOTP->remitaTransRef);
-        $authParams = utf8_encode($mandateActivateValidateOTP->authParams);
+        $card = utf8_encode($mandateActivateValidateOTP->card);
+        $otp = utf8_encode($mandateActivateValidateOTP->otp);
 
         $merchantId = utf8_encode(MandateDirectDebitService::$credentials->merchantId);
         $apiKey = utf8_encode(MandateDirectDebitService::$credentials->apiKey);
         $apiToken = utf8_encode(MandateDirectDebitService::$credentials->apiToken);
-        $requestId = utf8_encode(MandateDirectDebitService::$credentials->requestId);
+        $requestId = utf8_encode(round(microtime(true) * 1000));
         $time = date("H:i:s+000000");
         $date = date("Y-m-d");
         $timeStamp = utf8_encode($date . "T" . $time); // 2019-09-11T05:33:39+000000
@@ -131,6 +139,19 @@ class MandateDirectDebitService
             'API_DETAILS_HASH:' . $hash
         );
 
+        $authParam1 = new AuthParams1();
+        $authParam1->param1 = "OTP";
+        $authParam1->value = $otp;
+
+        $authParam2 = new AuthParams2();
+        $authParam2->param2 = "CARD";
+        $authParam2->value = $card;
+
+        $authParams = array(
+            $authParam1,
+            $authParam2
+        );
+
         // POST BODY
         $phpArray = array(
             'remitaTransRef' => $remitaTransRef,
@@ -139,7 +160,6 @@ class MandateDirectDebitService
 
         // echo "\n";
         // echo "headers: ", json_encode($headers);
-
         // echo "\n";
         // echo "phpArray: ", json_encode($phpArray);
 
@@ -178,6 +198,11 @@ class MandateDirectDebitService
             'fundingAccount' => $fundingAccount,
             'fundingBankCode' => $fundingBankCode
         );
+
+        echo "\n";
+        echo "headers: ", json_encode($headers);
+        echo "\n";
+        echo "phpArray: ", json_encode($phpArray);
 
         // POST CALL
         $result = HTTPUtil::postMethod($url, $headers, json_encode($phpArray));

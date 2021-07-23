@@ -5,6 +5,8 @@ class MandateActivateValidateOTP
 
     public $remitaTransRef;
 
-    public $authParams;
+    public $card;
+
+    public $otp;
 }
 ?>
